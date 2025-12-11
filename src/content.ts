@@ -32,6 +32,7 @@ function main() {
 
                 attachmentLinkEl.parentElement?.insertBefore(videoEl, attachmentLinkEl)
                 console.log('Better trac: video added', videoEl);
+
                 return
             }
 
@@ -88,6 +89,25 @@ function main() {
                     })
 
                     attachmentLinkEl.parentElement?.insertBefore(zipTreeEl, attachmentLinkEl)
+
+                    return;
+            }
+
+            if (attachmentMimeType?.startsWith('image/')) {
+                const imageEl = createLayoutFromString(
+                    `<img
+                        style="
+                            max-height: 400px;
+                            width: 100%;
+                        "
+                        src="${attachmentUrl}"
+                    />`
+                )
+
+                attachmentLinkEl.parentElement?.insertBefore(imageEl, attachmentLinkEl)
+                console.log('Better trac: image added', imageEl);
+
+                return
             }
 
             console.log('Better trac: unhandled mime', attachmentMimeType);
