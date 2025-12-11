@@ -12,105 +12,109 @@ function main() {
             .filter(it => it.href.includes('/raw-attachment/') && !it.classList.contains(HANDLED_CLASS_NAME))
 
         for (const attachmentLinkEl of unhandledAttachmentLinkEls) {
-            attachmentLinkEl.classList.add(HANDLED_CLASS_NAME)
+            try {
+                attachmentLinkEl.classList.add(HANDLED_CLASS_NAME)
 
-            const attachmentUrl = attachmentLinkEl.href
+                const attachmentUrl = attachmentLinkEl.href
 
-            const attachmentMimeType = await fetchMimeType(attachmentUrl)
+                const attachmentMimeType = await fetchMimeType(attachmentUrl)
 
-            if (attachmentMimeType?.startsWith('video/')) {
-                const videoEl = createLayoutFromString(
-                    `<video
-                        style="
-                            height: 400px;
-                            width: 100%;
-                        "
-                        controls
-                        src="${attachmentUrl}"
-                    />`
-                )
+                if (attachmentMimeType?.startsWith('video/')) {
+                    const videoEl = createLayoutFromString(
+                        `<video
+                            style="
+                                height: 400px;
+                                width: 100%;
+                            "
+                            controls
+                            src="${attachmentUrl}"
+                        />`
+                    )
 
-                attachmentLinkEl.parentElement?.insertBefore(videoEl, attachmentLinkEl)
-                console.log('Better trac: video added', videoEl);
+                    attachmentLinkEl.parentElement?.insertBefore(videoEl, attachmentLinkEl)
+                    console.log('Better trac: video added', videoEl);
 
-                return
-            }
+                    return
+                }
 
-            if (attachmentMimeType?.startsWith('application/zip')) {
-                    const res = await fetch(attachmentUrl);
-                    const buffer = new Uint8Array(await res.arrayBuffer());
-                    const files = await listZip(buffer);
+                if (attachmentMimeType?.startsWith('application/zip')) {
+                        const res = await fetch(attachmentUrl);
+                        const buffer = new Uint8Array(await res.arrayBuffer());
+                        const files = await listZip(buffer);
 
-                    addStyle('better-trac-zip', `
-                        .better-trac-zip {
-                            max-height: 400px;
-                            border: 1px solid #ccc;
-                            width: 100%;
-                            padding: 4px;
-                            overflow: auto;
-                            display: flex;
-                            flex-direction: column;
-                            gap: 4px;
-                        }
-                    `)
-
-                    const zipTreeEl = createLayoutFromString(`<div class="better-trac-zip"></div>`)
-
-                    files.map(filePath => {
-                        addStyle('better-trac-zip-file', `
-                            .better-trac-zip-file {
+                        addStyle('better-trac-zip', `
+                            .better-trac-zip {
+                                max-height: 400px;
+                                border: 1px solid #ccc;
+                                width: 100%;
                                 padding: 4px;
-                                border-radius: 4px;
-                                background: #f0f0f0;
-                                cursor: pointer;
-                            }
-                            .better-trac-zip-file:hover {
-                                background: #e0e0e0;
+                                overflow: auto;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 4px;
                             }
                         `)
 
-                        const fileEl = createLayoutFromString(`
-                            <div class="better-trac-zip-file">
-                                ${filePath}
-                            </div>
-                        `)
+                        const zipTreeEl = createLayoutFromString(`<div class="better-trac-zip"></div>`)
 
-                        fileEl.addEventListener('click', async () => {
-                            const data = await readFileFromZip(buffer, filePath);
+                        files.map(filePath => {
+                            addStyle('better-trac-zip-file', `
+                                .better-trac-zip-file {
+                                    padding: 4px;
+                                    border-radius: 4px;
+                                    background: #f0f0f0;
+                                    cursor: pointer;
+                                }
+                                .better-trac-zip-file:hover {
+                                    background: #e0e0e0;
+                                }
+                            `)
 
-                            if (!data) {
-                                return
-                            }
+                            const fileEl = createLayoutFromString(`
+                                <div class="better-trac-zip-file">
+                                    ${filePath}
+                                </div>
+                            `)
 
-                            openInBrowser(data);
-                        });
+                            fileEl.addEventListener('click', async () => {
+                                const data = await readFileFromZip(buffer, filePath);
 
-                        zipTreeEl.appendChild(fileEl)
-                    })
+                                if (!data) {
+                                    return
+                                }
 
-                    attachmentLinkEl.parentElement?.insertBefore(zipTreeEl, attachmentLinkEl)
+                                openInBrowser(data);
+                            });
 
-                    return;
+                            zipTreeEl.appendChild(fileEl)
+                        })
+
+                        attachmentLinkEl.parentElement?.insertBefore(zipTreeEl, attachmentLinkEl)
+
+                        return;
+                }
+
+                if (attachmentMimeType?.startsWith('image/')) {
+                    const imageEl = createLayoutFromString(
+                        `<img
+                            style="
+                                max-height: 400px;
+                                width: 100%;
+                            "
+                            src="${attachmentUrl}"
+                        />`
+                    )
+
+                    attachmentLinkEl.parentElement?.insertBefore(imageEl, attachmentLinkEl)
+                    console.log('Better trac: image added', imageEl);
+
+                    return
+                }
+
+                console.log('Better trac: unhandled mime', attachmentMimeType);
+            } catch (error) {
+                console.warn('Better trac: failed to process attachment', attachmentLinkEl, error);
             }
-
-            if (attachmentMimeType?.startsWith('image/')) {
-                const imageEl = createLayoutFromString(
-                    `<img
-                        style="
-                            max-height: 400px;
-                            width: 100%;
-                        "
-                        src="${attachmentUrl}"
-                    />`
-                )
-
-                attachmentLinkEl.parentElement?.insertBefore(imageEl, attachmentLinkEl)
-                console.log('Better trac: image added', imageEl);
-
-                return
-            }
-
-            console.log('Better trac: unhandled mime', attachmentMimeType);
         }
     }, 1000)
 }
