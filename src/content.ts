@@ -113,61 +113,61 @@ function main() {
             console.log('Better trac: unhandled mime', attachmentMimeType);
         }
     }, 1000)
+}
 
-    function createLayoutFromString(content: string): HTMLElement {
-        const div = document.createElement("div");
-        div.innerHTML = content;
-        return div.children[0] as HTMLElement;
+function createLayoutFromString(content: string): HTMLElement {
+    const div = document.createElement("div");
+    div.innerHTML = content;
+    return div.children[0] as HTMLElement;
+}
+
+function addStyle(key: string, content: string) {
+    if (!document.getElementById(key)) {
+        const style = document.createElement("style");
+        style.id = key;
+        style.innerHTML = content;
+        document.head.appendChild(style);
     }
+}
 
-    function addStyle(key: string, content: string) {
-        if (!document.getElementById(key)) {
-            const style = document.createElement("style");
-            style.id = key;
-            style.innerHTML = content;
-            document.head.appendChild(style);
-        }
+async function fetchMimeType(url: string) {
+    try {
+        let response = await fetch(url, { method: "HEAD" });
+        let mime = response.headers.get("content-type");
+        return mime || undefined;
+    } catch {
+        return undefined
     }
+}
 
-    async function fetchMimeType(url: string) {
-        try {
-            let response = await fetch(url, { method: "HEAD" });
-            let mime = response.headers.get("content-type");
-            return mime || undefined;
-        } catch {
-            return undefined
-        }
-    }
+async function listZip(buffer: Uint8Array): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        const names: string[] = [];
+        const unzip = new Unzip();
 
-    async function listZip(buffer: Uint8Array): Promise<string[]> {
-        return new Promise((resolve, reject) => {
-            const names: string[] = [];
-            const unzip = new Unzip();
+        unzip.onfile = (file) => {
+            names.push(file.name);
+        };
 
-            unzip.onfile = (file) => {
-                names.push(file.name);
-            };
+        unzip.push(buffer, true);
+        resolve(names);
+    });
+}
 
-            unzip.push(buffer, true);
-            resolve(names);
-        });
-    }
+function readFileFromZip(
+    zipped: Uint8Array | ArrayBuffer,
+    targetPath: string
+): Uint8Array | null {
+    const zipData = zipped instanceof Uint8Array ? zipped : new Uint8Array(zipped);
 
-    function readFileFromZip(
-        zipped: Uint8Array | ArrayBuffer,
-        targetPath: string
-    ): Uint8Array | null {
-        const zipData = zipped instanceof Uint8Array ? zipped : new Uint8Array(zipped);
+    const result = unzipSync(zipData, {
+        filter: file => file.name === targetPath,
+    });
+    return (result as Record<string, Uint8Array>)[targetPath] ?? null;
+}
 
-        const result = unzipSync(zipData, {
-            filter: file => file.name === targetPath,
-        });
-        return (result as Record<string, Uint8Array>)[targetPath] ?? null;
-    }
-
-    function openInBrowser(data: Uint8Array, mime = "text/plain") {
-        const blob = new Blob([data as any], { type: mime });
-        const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-    }
+function openInBrowser(data: Uint8Array, mime = "text/plain") {
+    const blob = new Blob([data as any], { type: mime });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
 }
