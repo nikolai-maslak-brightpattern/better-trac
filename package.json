@@ -1,23 +1,24 @@
 {
-  "name": "trash",
+  "name": "better-trac",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && mv index.js trac.user.js",
-    "dev": "tsc --watch & (while true; do if [ -f index.js ]; then mv index.js trac.user.js; fi; sleep 0.1; done)",
-    "start": "tsx src/index.ts",
-    "type-check": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc && vite build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.15.0",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
-    "@types/node": "^25.0.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@types/webextension-polyfill": "^0.10.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "~5.6.3",
+    "vite": "^5.0.0",
+    "vite-plugin-web-extension": "^4.0.0",
+    "webextension-polyfill": "^0.10.0"
   }
 }
