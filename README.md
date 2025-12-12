@@ -1,4 +1,6 @@
-Adds attachment previews for videos, images, and zip files in Trac.
+# Better Trac
+1. Adds attachment previews for videos, images, and zip files in Trac.
+2. Adds ability to paste screenshot from clipboard on attachment upload page
 
 ## Installation
 1.
