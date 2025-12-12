@@ -3,6 +3,7 @@ Adds attachment previews for videos, images, and zip files in Trac.
 ## Installation
 1.
 ```
+yarn install
 yarn build
 ```
 
