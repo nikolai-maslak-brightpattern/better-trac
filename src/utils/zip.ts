@@ -9,6 +9,10 @@ export async function listZip(buffer: Uint8Array): Promise<string[]> {
         const unzip = new Unzip();
 
         unzip.onfile = (file) => {
+            const isDirectory = file.name.endsWith("/")
+            if (isDirectory) {
+                return
+            }
             names.push(file.name);
         };
 
