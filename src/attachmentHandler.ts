@@ -18,6 +18,10 @@ function addPasteListener() {
 
     isListenerAdded = true
 
+    if (window.location.href.match(/\/attachment\/ticket\/(\d+)/)) {
+        return
+    }
+
     const ticketNumber = window.location.href.match(/\/ticket\/(\d+)/)?.[1]
 
     if (!ticketNumber) {
