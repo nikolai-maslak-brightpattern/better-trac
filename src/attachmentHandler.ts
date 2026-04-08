@@ -5,10 +5,47 @@ import { listZip, openInBrowser } from "./utils/zip";
 
 const HANDLED_CLASS_NAME = 'better-tracced' as const
 
+export function handleAttachments() {
+    addPasteListener()
+    pasteAttachmentPreviews()
+}
+
+let isListenerAdded = false
+function addPasteListener() {
+    if (isListenerAdded) {
+        return
+    }
+
+    isListenerAdded = true
+
+    const ticketNumber = window.location.href.match(/\/ticket\/(\d+)/)?.[1]
+
+    if (!ticketNumber) {
+        return
+    }
+
+    window.addEventListener('paste', (e) => {
+        if (
+            document.activeElement &&
+            document.activeElement instanceof HTMLElement &&
+            (
+                document.activeElement.tagName === 'INPUT' ||
+                document.activeElement.tagName === 'TEXTAREA' ||
+                document.activeElement.isContentEditable
+            )
+        ) {
+            return
+        }
+
+        const attachmentUrl = `${window.location.origin}/attachment/ticket/${ticketNumber}/?action=new`
+        window.open(attachmentUrl, '_blank')
+    })
+}
+
 /**
  * Finds all '/raw-attachment/' links and pastes preview after
  */
-export async function handleAttachments() {
+async function pasteAttachmentPreviews() {
     const allLinkEls = document.getElementsByTagName('a');
 
     const unhandledAttachmentLinkEls = [...allLinkEls]
