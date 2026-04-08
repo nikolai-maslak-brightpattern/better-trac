@@ -20,7 +20,10 @@ export async function handleAttachmentForm() {
     console.log('Better trac: attachment form', attachmentFormEl);
 
     document.addEventListener("paste", (event) => {
-        const file = event.clipboardData?.items?.[0]?.getAsFile()
+        const items = Array.from(event.clipboardData?.items || []);
+        const imageItem = items?.find((item) => item.kind === "file" && item.type.startsWith("image/"));
+        const file = imageItem?.getAsFile();
+
         if (!file) return;
 
         const ext = file.name.substring(file.name.lastIndexOf("."));

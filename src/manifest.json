@@ -14,6 +14,17 @@
   "{{firefox}}.browser_action": {
       "default_title": "BetterTrac"
   },
+  "{{chrome}}.background": {
+      "service_worker": "src/background.ts"
+  },
+  "{{firefox}}.background": {
+      "scripts": ["src/background.ts"]
+  },
+  "{{chrome}}.options_ui": {
+      "page": "src/options.html",
+      "open_in_tab": true
+  },
+  "{{firefox}}.options_page": "src/options.html",
   "content_scripts": [
     {
       "matches": ["https://trac.brightpattern.com/*"],
