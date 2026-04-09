@@ -5,11 +5,14 @@ import { layoutAtom, canvasAtom, screenshotsAtom } from './atoms';
 export function CombinerToolbar() {
   const [layout, setLayout] = useAtom(layoutAtom);
   const canvas = useAtomValue(canvasAtom);
-  const setScreenshots = useSetAtom(screenshotsAtom);
+  const [screenshots, setScreenshots] = useAtom(screenshotsAtom);
   const [copyLabel, setCopyLabel] = useState('Copy Combined Image');
 
   const handleCopy = useCallback(() => {
-    if (!canvas || canvas.width === 0 || canvas.height === 0) return;
+    if (!screenshots.length || !canvas) {
+      return;
+    }
+
     canvas.toBlob(async (blob) => {
       try {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob! })]);
@@ -19,7 +22,7 @@ export function CombinerToolbar() {
         alert('Copy failed: ' + (err as Error).message);
       }
     });
-  }, [canvas]);
+  }, [canvas, screenshots]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -64,12 +67,14 @@ export function CombinerToolbar() {
       </label>
       <button
         onClick={handleCopy}
-        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors"
+        disabled={!screenshots.length}
+        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {copyLabel}
       </button>
       <button
         onClick={handleClear}
+        disabled={!screenshots.length}
         className="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 rounded font-medium transition-colors"
       >
         Clear
