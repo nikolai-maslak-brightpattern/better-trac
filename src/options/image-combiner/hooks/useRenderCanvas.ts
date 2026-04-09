@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { screenshotsAtom, layoutAtom, Layout, canvasAtom } from './atoms';
-import type { Screenshot } from './ScreenshotThumbnails';
+import { screenshotsAtom, layoutAtom, Layout, canvasAtom } from '../atoms';
+import type { Screenshot } from '../ScreenshotThumbnails';
 
 export function useRenderCanvas() {
   const [canvas, setCanvas] = useAtom(canvasAtom);

@@ -15,20 +15,20 @@
       "default_title": "BetterTrac"
   },
   "{{chrome}}.background": {
-      "service_worker": "src/background.ts"
+      "service_worker": "src/background/background.ts"
   },
   "{{firefox}}.background": {
-      "scripts": ["src/background.ts"]
+      "scripts": ["src/background/background.ts"]
   },
   "{{chrome}}.options_ui": {
-      "page": "src/options.html",
+      "page": "src/options/options.html",
       "open_in_tab": true
   },
-  "{{firefox}}.options_page": "src/options.html",
+  "{{firefox}}.options_page": "src/options/options.html",
   "content_scripts": [
     {
       "matches": ["https://trac.brightpattern.com/*"],
-      "js": ["src/content.ts"],
+      "js": ["src/content/content.ts"],
       "run_at": "document_start"
     }
   ],

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { usePasteScreenshot } from './usePasteScreenshot';
-import { useRenderCanvas } from './useRenderCanvas';
+import { usePasteScreenshot } from './hooks/usePasteScreenshot';
+import { useRenderCanvas } from './hooks/useRenderCanvas';
 import { ScreenshotThumbnails } from './ScreenshotThumbnails';
 import { CombinerToolbar } from './CombinerToolbar';
 

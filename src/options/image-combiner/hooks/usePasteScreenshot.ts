@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useSetAtom } from 'jotai';
-import { screenshotsAtom } from './atoms';
+import { screenshotsAtom } from '../atoms';
 
 export function usePasteScreenshot() {
   const setScreenshots = useSetAtom(screenshotsAtom);
