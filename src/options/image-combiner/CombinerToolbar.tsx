@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { layoutAtom, canvasAtom, screenshotsAtom } from './atoms';
 
 export function CombinerToolbar() {
@@ -20,6 +20,16 @@ export function CombinerToolbar() {
       }
     });
   }, [canvas]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+        handleCopy();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [handleCopy]);
 
   const handleClear = useCallback(() => {
     setScreenshots(prev => {
