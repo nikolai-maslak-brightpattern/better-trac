@@ -2,11 +2,11 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useState, useCallback } from 'react';
 import { layoutAtom, canvasAtom, screenshotsAtom } from './atoms';
 
-export function StashToolbar() {
+export function CombinerToolbar() {
   const [layout, setLayout] = useAtom(layoutAtom);
   const canvas = useAtomValue(canvasAtom);
   const setScreenshots = useSetAtom(screenshotsAtom);
-  const [copyLabel, setCopyLabel] = useState('Copy Stash');
+  const [copyLabel, setCopyLabel] = useState('Copy Combined Image');
 
   const handleCopy = useCallback(() => {
     if (!canvas || canvas.width === 0 || canvas.height === 0) return;
@@ -14,7 +14,7 @@ export function StashToolbar() {
       try {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob! })]);
         setCopyLabel('Copied!');
-        setTimeout(() => setCopyLabel('Copy Stash'), 1500);
+        setTimeout(() => setCopyLabel('Copy Combined Image'), 1500);
       } catch (err) {
         alert('Copy failed: ' + (err as Error).message);
       }

@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { usePasteScreenshot } from './usePasteScreenshot';
 import { useRenderCanvas } from './useRenderCanvas';
 import { ScreenshotThumbnails } from './ScreenshotThumbnails';
-import { StashToolbar } from './StashToolbar';
+import { CombinerToolbar } from './CombinerToolbar';
 
-export function PictureStash() {
+export function ImageCombiner() {
   const canvasCallbackRef = useRenderCanvas();
 
   usePasteScreenshot();
@@ -12,7 +12,7 @@ export function PictureStash() {
   return (
     <div className="bg-gray-900 text-white h-screen p-6 flex flex-col gap-2">
       <p className="text-gray-500 text-sm">Press Ctrl+V / Cmd+V to paste a screenshot</p>
-      <StashToolbar />
+      <CombinerToolbar />
       <ScreenshotThumbnails />
 
       <div className="border border-gray-700 rounded flex-auto overflow-hidden">
