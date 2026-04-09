@@ -75,7 +75,7 @@ export function CombinerToolbar() {
       <button
         onClick={handleClear}
         disabled={!screenshots.length}
-        className="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 rounded font-medium transition-colors"
+        className="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 rounded font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Clear
       </button>
