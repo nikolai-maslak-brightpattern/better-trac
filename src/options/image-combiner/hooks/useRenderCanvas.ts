@@ -9,7 +9,10 @@ export function useRenderCanvas() {
   const layout = useAtomValue(layoutAtom);
 
   const renderCanvas = useCallback((shots: Screenshot[], currentLayout: Layout) => {
-    if (!canvas) return;
+    if (!canvas) {
+      return;
+    }
+
     const ctx = canvas.getContext('2d')!;  // canvas is non-null here
 
     if (shots.length === 0) {
