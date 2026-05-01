@@ -7,14 +7,20 @@ Enhances [trac.brightpattern.com](https://trac.brightpattern.com) with:
 3. **Image Combiner** — click the extension icon to open a tool for pasting, arranging, and combining multiple screenshots into one image, then copying it to the clipboard.
 
 ## Installation
-1.
+
+1. Build the extension:
 ```
 yarn install
 yarn build
 ```
 
-2. Go to Chrome Extensions: [chrome://extensions/](chrome://extensions/)
+**Chrome:**
 
+2. Go to [chrome://extensions/](chrome://extensions/)
 3. Enable "Developer mode" in the top right corner.
+4. Click "Load unpacked" and select the `dist/` directory.
 
-4. Select `dist/` directory in Chrome extensions page.
+**Firefox:**
+
+2. Go to [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)
+3. Click "Load Temporary Add-on" and select any file inside the `dist/` directory.
