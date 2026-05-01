@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn build
+
+      - name: Get version
+        id: pkg
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Zip dist
+        run: zip -r better-trac-${{ steps.pkg.outputs.version }}.zip dist/
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: v${{ steps.pkg.outputs.version }}
+          files: better-trac-${{ steps.pkg.outputs.version }}.zip
+          make_latest: true
