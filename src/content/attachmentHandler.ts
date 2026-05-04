@@ -67,6 +67,7 @@ async function pasteAttachmentPreviews() {
                 return
             }
 
+            // https://trac.brightpattern.com/ticket/46620
             if (attachmentUrl.endsWith('.md')) {
                 pasteMDPreview(attachmentLinkEl, attachmentUrl)
                 return
