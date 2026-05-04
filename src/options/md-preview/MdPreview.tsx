@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { BackButton } from '../BackButton';
 
 export function MdPreview() {
@@ -22,7 +23,7 @@ export function MdPreview() {
           onChange={e => setText(e.target.value)}
         />
         <div className="prose prose-invert max-w-none">
-          <Markdown>{text}</Markdown>
+          <Markdown remarkPlugins={[remarkGfm]}>{text}</Markdown>
         </div>
       </div>
     </div>
