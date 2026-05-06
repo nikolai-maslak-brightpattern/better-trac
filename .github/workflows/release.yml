@@ -19,19 +19,26 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      - run: yarn build
-
       - name: Get version
         id: pkg
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-      - name: Zip dist
-        run: zip -r better-trac-${{ steps.pkg.outputs.version }}.zip dist/
+      - run: yarn build
+
+      - name: Zip Chrome dist
+        run: zip -r better-trac-chrome-${{ steps.pkg.outputs.version }}.zip dist/
+
+      - run: yarn build:firefox
+
+      - name: Zip Firefox dist
+        run: zip -r better-trac-firefox-${{ steps.pkg.outputs.version }}.zip dist/
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.pkg.outputs.version }}
           name: v${{ steps.pkg.outputs.version }}
-          files: better-trac-${{ steps.pkg.outputs.version }}.zip
+          files: |
+            better-trac-chrome-${{ steps.pkg.outputs.version }}.zip
+            better-trac-firefox-${{ steps.pkg.outputs.version }}.zip
           make_latest: true
