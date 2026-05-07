@@ -1,6 +1,8 @@
 # Better Trac
 
-Enhances [trac.brightpattern.com](https://trac.brightpattern.com) with:
+Browser extension for [trac.brightpattern.com](https://trac.brightpattern.com). Supports Chrome and Firefox.
+
+Adds:
 
 1. **Inline attachment previews** — renders images, videos, zip contents, and HAR files directly on ticket pages.
 
