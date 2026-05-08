@@ -1,5 +1,5 @@
 import { Unzip, unzipSync } from "fflate";
-import browser from "webextension-polyfill";
+import { sendMessage } from "../messaging";
 import { fetchMimeType } from "./utils/network";
 import { addStyle, createLayoutFromString } from "./utils/domUtils";
 import { listZip, openInBrowser } from "./utils/zip";
@@ -152,7 +152,7 @@ function pasteMDPreview(attachmentLinkEl: HTMLAnchorElement, attachmentUrl: stri
         const res = await fetch(attachmentUrl);
         const text = await res.text();
 
-        await browser.runtime.sendMessage({
+        await sendMessage({
             type: 'openOptionsPage',
             data: {
                 page: '/md-preview',
