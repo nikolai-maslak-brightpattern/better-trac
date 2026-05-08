@@ -9,6 +9,8 @@ import { addMessageListener } from '../messaging';
 addMessageListener(async (message) => {
   if (message.type === 'openOptionsPage') {
     await setPendingOptionsPageTask(message.data);
-    browser.runtime.openOptionsPage();
+    browser.tabs.create({
+      url: browser.runtime.getURL('src/options/options.html')
+    });
   }
 });

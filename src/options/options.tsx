@@ -11,17 +11,17 @@ function AppRouter() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const check = () => {
+    const performPendingOptionsPageTask = () => {
       flushPendingOptionsPageTask().then((task) => {
         if (task) {
-          navigate(task.page, { state: { content: task.state } });
+          navigate(task.page, { state: task.state });
         }
       });
     };
 
-    check();
-    window.addEventListener('focus', check);
-    return () => window.removeEventListener('focus', check);
+    performPendingOptionsPageTask();
+    window.addEventListener('focus', performPendingOptionsPageTask);
+    return () => window.removeEventListener('focus', performPendingOptionsPageTask);
   }, []);
 
   return (

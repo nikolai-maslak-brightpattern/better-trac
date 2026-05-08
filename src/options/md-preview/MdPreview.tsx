@@ -9,7 +9,7 @@ export function MdPreview() {
   const [text, setText] = useState<string>('');
 
   useEffect(() => {
-    if (location.state?.content) setText(location.state.content);
+    if (location.state) setText(location.state);
   }, [location.key]);
 
   return (
