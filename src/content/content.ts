@@ -1,12 +1,14 @@
-import { handleAttachments } from "./attachmentHandler.js";
+import { pasteAttachmentPreviews } from "./attachmentHandler.js";
 import { handleAttachmentForm } from "./formHandler.js";
+import { addPasteListener } from "./pasteListener.js";
 
 main()
 
 function main() {
     const tick = () => {
-       handleAttachments()
-       handleAttachmentForm()
+        addPasteListener()
+        pasteAttachmentPreviews()
+        handleAttachmentForm()
     }
 
     tick()

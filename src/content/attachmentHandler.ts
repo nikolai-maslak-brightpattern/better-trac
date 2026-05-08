@@ -7,48 +7,7 @@ import { pasteImagePreview } from "./attachments/imagePreview";
 
 const HANDLED_CLASS_NAME = 'better-tracced' as const
 
-export function handleAttachments() {
-    addPasteListener()
-    pasteAttachmentPreviews()
-}
-
-let isListenerAdded = false
-function addPasteListener() {
-    if (isListenerAdded) {
-        return
-    }
-
-    isListenerAdded = true
-
-    if (window.location.href.match(/\/attachment\/ticket\/(\d+)/)) {
-        return
-    }
-
-    const ticketNumber = window.location.href.match(/\/ticket\/(\d+)/)?.[1]
-
-    if (!ticketNumber) {
-        return
-    }
-
-    window.addEventListener('paste', () => {
-        if (
-            document.activeElement &&
-            document.activeElement instanceof HTMLElement &&
-            (
-                document.activeElement.tagName === 'INPUT' ||
-                document.activeElement.tagName === 'TEXTAREA' ||
-                document.activeElement.isContentEditable
-            )
-        ) {
-            return
-        }
-
-        const attachmentUrl = `${window.location.origin}/attachment/ticket/${ticketNumber}/?action=new`
-        window.open(attachmentUrl, '_blank')
-    })
-}
-
-async function pasteAttachmentPreviews() {
+export async function pasteAttachmentPreviews() {
     const allLinkEls = document.getElementsByTagName('a');
 
     const unhandledAttachmentLinkEls = [...allLinkEls]
@@ -79,7 +38,7 @@ async function pasteAttachmentPreviews() {
             }
 
             if (attachmentMimeType?.startsWith('application/zip')) {
-                await pasteZipPreview(attachmentLinkEl, attachmentUrl)
+                pasteZipPreview(attachmentLinkEl, attachmentUrl)
                 return
             }
 
