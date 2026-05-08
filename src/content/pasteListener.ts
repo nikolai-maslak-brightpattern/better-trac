@@ -1,12 +1,4 @@
-let isListenerAdded = false
-
 export function addPasteListener() {
-    if (isListenerAdded) {
-        return
-    }
-
-    isListenerAdded = true
-
     if (window.location.href.match(/\/attachment\/ticket\/(\d+)/)) {
         return
     }

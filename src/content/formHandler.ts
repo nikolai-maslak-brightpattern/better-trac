@@ -1,5 +1,3 @@
-const HANDLED_CLASS_NAME = 'better-tracced' as const
-
 /**
  * Waits for attachment form and adds paste event handler to make it possible to paste files directly
  */
@@ -9,13 +7,10 @@ export async function handleAttachmentForm() {
 
     if (
         !attachmentFormEl ||
-        attachmentFormEl.classList.contains(HANDLED_CLASS_NAME) ||
         !fileInputEl
     ) {
         return
     }
-
-    attachmentFormEl?.classList.add(HANDLED_CLASS_NAME)
 
     console.log('Better trac: attachment form', attachmentFormEl);
 

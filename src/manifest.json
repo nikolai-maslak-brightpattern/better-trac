@@ -29,7 +29,7 @@
     {
       "matches": ["https://trac.brightpattern.com/*"],
       "js": ["src/content/content.ts"],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ],
   "{{chrome}}.permissions": ["scripting", "storage"],

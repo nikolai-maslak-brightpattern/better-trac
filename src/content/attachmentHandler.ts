@@ -5,18 +5,13 @@ import { pasteVideoPreview } from "./attachments/videoPreview";
 import { pasteZipPreview } from "./attachments/zipPreview";
 import { pasteImagePreview } from "./attachments/imagePreview";
 
-const HANDLED_CLASS_NAME = 'better-tracced' as const
-
 export async function pasteAttachmentPreviews() {
     const allLinkEls = document.getElementsByTagName('a');
 
-    const unhandledAttachmentLinkEls = [...allLinkEls]
-        .filter(it => it.href.includes('/raw-attachment/') && !it.classList.contains(HANDLED_CLASS_NAME))
+    const attachmentLinkEls = [...allLinkEls].filter(it => it.href.includes('/raw-attachment/'))
 
-    for (const attachmentLinkEl of unhandledAttachmentLinkEls) {
+    attachmentLinkEls.forEach(async (attachmentLinkEl) => {
         try {
-            attachmentLinkEl.classList.add(HANDLED_CLASS_NAME)
-
             const attachmentUrl = attachmentLinkEl.href
 
             if (attachmentUrl.endsWith('.har')) {
@@ -51,5 +46,5 @@ export async function pasteAttachmentPreviews() {
         } catch (error) {
             console.warn('Better trac: failed to process attachment', attachmentLinkEl, error);
         }
-    }
+    })
 }
